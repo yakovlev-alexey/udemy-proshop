@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "MERN ProShop eCommerce application",
   "main": "backend/server.js",
+  "type": "module",
   "scripts": {
     "start": "node backend/server",
-    "server": "node backend/server",
+    "server": "nodemon backend/server",
     "client": "yarn --cwd ./frontend start",
     "dev": "concurrently \"yarn server\" \"yarn client\""
   },
