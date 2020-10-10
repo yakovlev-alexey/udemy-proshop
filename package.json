@@ -1,0 +1,16 @@
+{
+  "name": "proshop",
+  "version": "1.0.0",
+  "description": "MERN ProShop eCommerce application",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "nodemon backend/server.js"
+  },
+  "repository": "https://github.com/yakovlev-alexey/udemy-proshop",
+  "author": "Alexey Yakovlev <alexeyyakovlev0359@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
