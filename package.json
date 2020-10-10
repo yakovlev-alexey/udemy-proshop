@@ -4,7 +4,10 @@
   "description": "MERN ProShop eCommerce application",
   "main": "backend/server.js",
   "scripts": {
-    "start": "nodemon backend/server.js"
+    "start": "node backend/server",
+    "server": "node backend/server",
+    "client": "yarn --cwd ./frontend start",
+    "dev": "concurrently \"yarn server\" \"yarn client\""
   },
   "repository": "https://github.com/yakovlev-alexey/udemy-proshop",
   "author": "Alexey Yakovlev <alexeyyakovlev0359@gmail.com>",
@@ -12,5 +15,9 @@
   "private": true,
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.4"
   }
 }
