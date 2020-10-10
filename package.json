@@ -8,13 +8,16 @@
     "start": "node backend/server",
     "server": "nodemon backend/server",
     "client": "yarn --cwd ./frontend start",
-    "dev": "concurrently \"yarn server\" \"yarn client\""
+    "dev": "concurrently \"yarn server\" \"yarn client\"",
+    "data:import": "node backend/seeder",
+    "data:delete": "node backend/seeder -d"
   },
   "repository": "https://github.com/yakovlev-alexey/udemy-proshop",
   "author": "Alexey Yakovlev <alexeyyakovlev0359@gmail.com>",
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
