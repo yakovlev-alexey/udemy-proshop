@@ -4,6 +4,7 @@ import colors from 'colors'
 
 import connectDB from './config/db.js'
 
+import userRoutes from './routes/userRoutes.js'
 import productRoutes from './routes/productRoutes.js'
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
@@ -16,12 +17,16 @@ connectDB()
 const app = express()
 const port = process.env.PORT || 5000
 
+// setup middleware
+app.use(express.json())
+
 // setup routers
+app.use('/api/users', userRoutes)
 app.use('/api/products', productRoutes)
 
-// setup middleware
+// setup error handlers
 app.use(notFound)
-app.use(errorHandler)
+app.use(errorHandler) 
 
 // initialize server
 app.listen(port, () => {
