@@ -14,6 +14,7 @@ import PaymentScreen from './screens/PaymentScreen'
 import ProductScreen from './screens/ProductScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import ShippingScreen from './screens/ShippingScreen'
+import PlaceOrderScreen from './screens/PlaceOrderScreen'
 
 import './bootstrap.min.css'
 
@@ -23,6 +24,7 @@ const App = () => {
       <Header />
       <main className="py-3">
         <Container>
+          <Route path="/placeorder" component={PlaceOrderScreen} />
           <Route path="/product/:id" component={ProductScreen} />
           <Route path="/cart/:id?" component={CartScreen} />
           <Route path="/register" component={RegisterScreen} />
