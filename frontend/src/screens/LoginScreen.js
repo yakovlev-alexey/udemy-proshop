@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 
+import CheckoutSteps from '../components/CheckoutSteps'
 import FormContainer from '../components/FormContainer'
 import { login } from '../actions/userActions'
 import Message from '../components/Message'
@@ -33,6 +34,7 @@ const LoginScreen = ({ history, location }) => {
 
   return (
     <FormContainer>
+      {redirect === 'shipping' && <CheckoutSteps step1 />}
       <h1>Sign in</h1>
       {error && <Message variant="danger">{error}</Message>}
       <Form onSubmit={submitHandler}>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 
+import CheckoutSteps from '../components/CheckoutSteps'
 import FormContainer from '../components/FormContainer'
 import { register } from '../actions/userActions'
 import Message from '../components/Message'
@@ -40,6 +41,7 @@ const RegisterScreen = ({ location, history }) => {
 
   return (
     <FormContainer>
+      {redirect === 'shipping' && <CheckoutSteps step1 />}
       <h1>Sign Up</h1>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
@@ -88,7 +90,7 @@ const RegisterScreen = ({ location, history }) => {
 
       <Row className="py-3">
         <Col>
-          Have an Account? <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>Register</Link>
+          Have an Account? <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>Sign in</Link>
         </Col>
       </Row>
 
