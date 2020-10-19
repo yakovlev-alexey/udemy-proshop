@@ -10,6 +10,8 @@ import productRoutes from './routes/productRoutes.js'
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
+import { updateQiwiOrderStatus } from './controllers/qiwiController.js'
+
 dotenv.config()
 
 // initialize a connection to MongoDB Atlas
@@ -26,9 +28,13 @@ app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/products', productRoutes)
 
+// setup additional controllers
+app.post('/api/payments/qiwi', updateQiwiOrderStatus)
+app.get('/api/payments/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
+
 // setup error handlers
 app.use(notFound)
-app.use(errorHandler) 
+app.use(errorHandler)
 
 // initialize server
 app.listen(port, () => {

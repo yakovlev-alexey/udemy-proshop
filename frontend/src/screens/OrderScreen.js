@@ -2,13 +2,24 @@ import React, { useEffect } from 'react'
 
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Row, Col, ListGroup, Image } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image } from 'react-bootstrap'
 
 import Message from '../components/Message'
 import { listOrderDetails } from '../actions/orderActions'
 import Loader from '../components/Loader'
 
+import QiwiPaymentButton from '../components/QiwiPaymentButton'
+import PaypalPaymentButton from '../components/PaypalPaymentButton'
+
 const addDecimals = (num) => (Math.round(num * 100) / 100).toFixed(2)
+
+const renderPaymentButton = (order, updateOrder) => {
+  if (order.paymentMethod === "PayPal") {
+    return <PaypalPaymentButton order={order} updateOrder={updateOrder} />
+  } else if (order.paymentMethod === "Qiwi") {
+    return <QiwiPaymentButton order={order} />
+  }
+}
 
 const OrderScreen = ({ match }) => {
   const orderId = match.params.id
@@ -17,9 +28,11 @@ const OrderScreen = ({ match }) => {
 
   const dispatch = useDispatch()
 
+  const updateOrder = () => dispatch(listOrderDetails(orderId))
+
   useEffect(() => {
     if (!order || order._id !== orderId) {
-      dispatch(listOrderDetails(orderId))
+      updateOrder()
     }
   }, [order, orderId, dispatch])
 
@@ -142,6 +155,12 @@ const OrderScreen = ({ match }) => {
                 <Col>${order.totalPrice}</Col>
               </Row>
             </ListGroup.Item>
+
+            {!order.isPaid && (
+              <ListGroup.Item>
+                {renderPaymentButton(order, updateOrder)}
+              </ListGroup.Item>
+            )}
           </ListGroup>
         </Col>
       </Row>

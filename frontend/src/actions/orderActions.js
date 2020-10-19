@@ -6,9 +6,9 @@ import {
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
-  ORDER_PAY_REQUEST,
-  ORDER_PAY_SUCCESS,
-  ORDER_PAY_FAIL
+  ORDER_PAYPAL_REQUEST,
+  ORDER_PAYPAL_SUCCESS,
+  ORDER_PAYPAL_FAIL
 } from '../constants/orderConstants'
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -64,7 +64,7 @@ export const listOrderDetails = (id) => async (dispatch, getState) => {
 
 export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
   try {
-    dispatch({ type: ORDER_PAY_REQUEST })
+    dispatch({ type: ORDER_PAYPAL_REQUEST })
 
     const {
       userLogin: { userInfo }
@@ -77,12 +77,12 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
       }
     }
 
-    const { data } = await axios.put(`/api/orders/${id}/pay`, paymentResult, config)
+    const { data } = await axios.put(`/api/orders/${id}/paypal`, paymentResult, config)
 
-    dispatch({ type: ORDER_PAY_SUCCESS, payload: data })
+    dispatch({ type: ORDER_PAYPAL_SUCCESS, payload: data })
   } catch (error) {
     dispatch({
-      type: ORDER_PAY_FAIL,
+      type: ORDER_PAYPAL_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message
     })
   }

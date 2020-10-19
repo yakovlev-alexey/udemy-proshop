@@ -42,6 +42,16 @@ const PaymentScreen = ({ history }) => {
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </Col>
+          <Col>
+            <Form.Check
+              type="radio"
+              label="Qiwi or Credit Card"
+              id="Qiwi"
+              name="paymentMethod"
+              value="Qiwi"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+          </Col>
         </Form.Group>
 
         <Button type="submit" variant="primary">

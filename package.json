@@ -17,6 +17,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@qiwi/bill-payments-node-js-sdk": "^3.2.1",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
