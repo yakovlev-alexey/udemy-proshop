@@ -13,6 +13,7 @@ import {
   ORDER_LIST_MY_SUCCESS,
   ORDER_LIST_MY_FAIL
 } from '../constants/orderConstants'
+import { CART_RESET } from '../constants/cartConstants'
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -32,7 +33,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
     const { data } = await axios.post('/api/orders', order, config)
 
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data })
-    dispatch({type: CART_})
+    dispatch({ type: CART_RESET })
   } catch (error) {
     dispatch({
       type: ORDER_CREATE_FAIL,
@@ -55,7 +56,7 @@ export const listMyOrders = () => async (dispatch, getState) => {
       }
     }
 
-    const { data } = await axios.get("/api/orders/my", config)
+    const { data } = await axios.get('/api/orders/my', config)
 
     dispatch({ type: ORDER_LIST_MY_SUCCESS, payload: data })
   } catch (error) {
