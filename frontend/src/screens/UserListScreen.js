@@ -4,7 +4,7 @@ import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 
-import { getAllUsers } from '../actions/userActions'
+import { getAllUsers, deleteUser } from '../actions/userActions'
 
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -14,6 +14,8 @@ const UserListScreen = ({ history }) => {
 
   const { userInfo } = useSelector((state) => state.userLogin)
 
+  const { success } = useSelector((state) => state.userDelete)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -22,9 +24,13 @@ const UserListScreen = ({ history }) => {
     } else {
       history.push('/login')
     }
-  }, [history, userInfo, dispatch])
+  }, [history, userInfo, dispatch, success])
 
-  const deleteHandler = (id) => {}
+  const deleteHandler = (id) => {
+    if (window.confirm('Are you sure you want to delete this user?')) {
+      dispatch(deleteUser(id))
+    }
+  }
 
   return (
     <React.Fragment>
@@ -65,7 +71,7 @@ const UserListScreen = ({ history }) => {
                       <i className="fas fa-edit" />
                     </Button>
                   </LinkContainer>
-                  <Button variant="danger" className="btn-sm" onClick={() => deleteHandler(user._id)}>
+                  <Button disabled={user._id === userInfo._id} variant="danger" className="btn-sm" onClick={() => deleteHandler(user._id)}>
                     <i className="fas fa-trash" />
                   </Button>
                 </td>
