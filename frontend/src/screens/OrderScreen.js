@@ -34,6 +34,7 @@ const OrderScreen = ({ match }) => {
     if (!order || order._id !== orderId) {
       updateOrder()
     }
+    // eslint-disable-next-line
   }, [order, orderId, dispatch])
 
   if (loading) {

@@ -127,11 +127,18 @@ export const getUser = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/:id
 // @access  Private/Admin
 export const updateUser = asyncHandler(async (req, res) => {
+  if (String(req.user._id) === req.params.id && !req.body.isAdmin) {
+    res.status(403)
+    throw new Error('User may not relieve themselves of admin priveleges')
+  }
+
   const user = await User.findById(req.params.id)
 
   if (user) {
     user.name = req.body.name || user.name
     user.email = req.body.email || user.email
+
+
     user.isAdmin = req.body.isAdmin
 
     const updatedUser = await user.save()
