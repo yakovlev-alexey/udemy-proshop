@@ -21,21 +21,25 @@ const renderPaymentButton = (order, updateOrder) => {
   }
 }
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id
 
   const { order, loading, error } = useSelector((state) => state.orderDetails)
+
+  const { userInfo } = useSelector((state) => state.userLogin)
 
   const dispatch = useDispatch()
 
   const updateOrder = () => dispatch(listOrderDetails(orderId))
 
   useEffect(() => {
-    if (!order || order._id !== orderId) {
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push('/login')
+    } else if (!order || order._id !== orderId) {
       updateOrder()
     }
     // eslint-disable-next-line
-  }, [order, orderId, dispatch])
+  }, [order, orderId, dispatch, userInfo])
 
   if (loading) {
     return <Loader />
@@ -108,7 +112,7 @@ const OrderScreen = ({ match }) => {
                             <Image src={item.image} alt={item.name} fluid rounded />
                           </Col>
                           <Col>
-                            <Link to={`/product/${item.id}`}>{item.name}</Link>
+                            <Link to={`/product/${item._id}`}>{item.name}</Link>
                           </Col>
                           <Col md={4}>
                             {item.qty} x ${item.price} = ${addDecimals(item.qty * item.price)}

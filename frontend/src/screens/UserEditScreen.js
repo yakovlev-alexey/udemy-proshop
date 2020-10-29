@@ -22,7 +22,7 @@ const UserEditScreen = ({ match }) => {
   const { loading: updateLoading, success, error: updateError } = useSelector((state) => state.userUpdate)
 
   useEffect(() => {
-    if (!user || user._id !== match.params.id) {
+    if (!user || user._id !== match.params.id || success) {
       dispatch({ type: USER_UPDATE_RESET })
       dispatch(getUserDetails(match.params.id))
     } else {
