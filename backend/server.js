@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import colors from 'colors'
 import path from 'path'
+import fs from 'fs'
 
 import connectDB from './config/db.js'
 
@@ -35,8 +36,11 @@ app.use('/api/upload', uploadRoutes)
 app.post('/api/payments/qiwi', updateQiwiOrderStatus)
 app.get('/api/payments/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
 
-const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+const uploadsFolder = path.join(path.resolve(), '/uploads')
+if (!fs.existsSync(uploadsFolder)) {
+  fs.mkdirSync(uploadsFolder)
+}
+app.use('/uploads', express.static(uploadsFolder))
 
 // setup error handlers
 app.use(notFound)
