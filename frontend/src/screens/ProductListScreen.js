@@ -32,7 +32,7 @@ const ProductListScreen = ({ history, match }) => {
     }
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET })
-      history.push(`/admin/products/${createdProduct._id}/edit`)
+      history.push(`/admin/product/${createdProduct._id}/edit`)
     }
     dispatch(listProducts())
   }, [history, userInfo, dispatch, successDelete, successCreate, createdProduct])
