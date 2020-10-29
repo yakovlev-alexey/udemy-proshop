@@ -10,7 +10,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { USER_UPDATE_RESET } from '../constants/userContants'
 
-const UserEditScreen = ({ match, history }) => {
+const UserEditScreen = ({ match }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)

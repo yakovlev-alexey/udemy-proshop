@@ -18,6 +18,7 @@ import ShippingScreen from './screens/ShippingScreen'
 import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
+import ProductListScreen from './screens/ProductListScreen'
 
 import './bootstrap.min.css'
 
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/profile" component={ProfileScreen} />
           <Route path="/admin/users" component={UserListScreen} />
           <Route path="/admin/user/:id/edit" component={UserEditScreen} />
+          <Route path="/admin/products" component={ProductListScreen} />
           <Route path="/shipping" component={ShippingScreen} />
           <Route path="/payment" component={PaymentScreen} />
           <Route exact path="/" component={HomeScreen} />
