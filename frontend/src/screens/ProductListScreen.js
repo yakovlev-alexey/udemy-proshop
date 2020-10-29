@@ -4,7 +4,8 @@ import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 
-import { deleteProduct, listProducts } from '../actions/productActions'
+import { deleteProduct, listProducts, createProduct } from '../actions/productActions'
+import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -12,21 +13,33 @@ import Loader from '../components/Loader'
 const ProductListScreen = ({ history, match }) => {
   const { loading, error, products } = useSelector((state) => state.productList)
 
-  const { loading: loadingDelete, success, error: errorDelete } = useSelector((state) => state.productDelete)
+  const { loading: loadingDelete, success: successDelete, error: errorDelete } = useSelector(
+    (state) => state.productDelete
+  )
+
+  const { loading: loadingCreate, success: successCreate, error: errorCreate, product: createdProduct } = useSelector(
+    (state) => state.productCreate
+  )
 
   const { userInfo } = useSelector((state) => state.userLogin)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listProducts())
-    } else {
+    if (!userInfo || !userInfo.isAdmin) {
       history.push('/login')
+      return
     }
-  }, [history, userInfo, dispatch, success])
+    if (successCreate) {
+      dispatch({ type: PRODUCT_CREATE_RESET })
+      history.push(`/admin/products/${createdProduct._id}/edit`)
+    }
+    dispatch(listProducts())
+  }, [history, userInfo, dispatch, successDelete, successCreate, createdProduct])
 
-  const createProductHandler = () => {}
+  const createProductHandler = () => {
+    dispatch(createProduct())
+  }
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure you want to delete this product? Related orders may also get invalidated')) {
@@ -52,13 +65,13 @@ const ProductListScreen = ({ history, match }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <React.Fragment>
-          {loadingDelete ? (
-            <Loader />
-          ) : errorDelete ? (
+          {(loadingDelete || loadingCreate) && <Loader />}
+          {errorDelete ? (
             <Message variant="danger">{errorDelete}</Message>
           ) : (
-            success && <Message variant="success">Product removed successfully</Message>
+            successDelete && <Message variant="success">Product removed successfully</Message>
           )}
+          {errorCreate && <Message variant="danger">{errorCreate}</Message>}
           <Table striped bordered hover responsive className="table-sm">
             <thead>
               <tr>
