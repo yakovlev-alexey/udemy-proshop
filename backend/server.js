@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import colors from 'colors'
+import morgan from 'morgan'
 import path from 'path'
 import fs from 'fs'
 
@@ -25,6 +26,7 @@ const port = process.env.PORT || 5000
 
 // setup middleware
 app.use(express.json())
+app.use(process.env.NODE_ENV === 'development' ? morgan('dev') : morgan('prod'))
 
 // setup routers
 app.use('/api/users', userRoutes)

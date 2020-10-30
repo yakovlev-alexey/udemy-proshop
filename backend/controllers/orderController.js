@@ -57,3 +57,47 @@ export const getMyOrders = asyncHandler(async (req, res) => {
 
   res.json(orders)
 })
+
+// @desc    Get all orders
+// @route   GET /api/orders
+// @access  Private/Admin
+export const getOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find().populate('user', 'id name email')
+
+  res.json(orders)
+})
+
+// @desc    Delete order by id
+// @route   DELETE /api/orders/:id
+// @access  Private/Admin
+export const deleteOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    await order.remove()
+
+    res.json({ message: 'Order removed' })
+  } else {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+
+// @desc    Toggle order as delivered
+// @route   POST /api/orders/delivered
+// @access  Private/Admin
+export const toggleDelivered = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    order.isDelivered = !order.isDelivered
+    order.deliveredAt = new Date()
+
+    const updatedOrder = await order.save()
+
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
