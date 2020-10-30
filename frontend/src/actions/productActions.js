@@ -20,17 +20,18 @@ import {
   PRODUCT_CREATE_REVIEW_SUCCESS
 } from '../constants/productConstants'
 
-export const listProducts = () => async (dispatch) => {
+export const listProducts = (keyword = '', page = '', pageSize = '') => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
 
-    const { data } = await axios.get('/api/products')
+    const { data } = await axios.get(`/api/products?keyword=${keyword}&page=${page}&pageSize=${pageSize}`)
 
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data })
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message
     })
   }
 }
@@ -45,7 +46,8 @@ export const listProductDetails = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message
     })
   }
 }
@@ -70,7 +72,8 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_DELETE_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message
     })
   }
 }
@@ -95,7 +98,8 @@ export const createProduct = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message
     })
   }
 }
@@ -121,7 +125,8 @@ export const updateProduct = (id, product) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_UPDATE_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message
     })
   }
 }
@@ -147,7 +152,8 @@ export const createReview = (id, review) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_REVIEW_FAIL,
-      payload: error.response && error.response.data.message ? error.response.data.message : error.message
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message
     })
   }
 }

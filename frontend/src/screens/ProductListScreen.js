@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import * as QueryString from 'query-string'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -7,15 +8,18 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { deleteProduct, listProducts, createProduct } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 
+import Paginate from '../components/Paginate'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
-const ProductListScreen = ({ history, match }) => {
-  const { loading, error, products } = useSelector((state) => state.productList)
+const ProductListScreen = ({ history, location }) => {
+  const { loading, error, products, page, pages } = useSelector((state) => state.productList)
 
   const { loading: loadingDelete, success: successDelete, error: errorDelete } = useSelector(
     (state) => state.productDelete
   )
+
+  const pageNumber = QueryString.parse(location.search).page
 
   const { loading: loadingCreate, success: successCreate, error: errorCreate, product: createdProduct } = useSelector(
     (state) => state.productCreate
@@ -34,8 +38,8 @@ const ProductListScreen = ({ history, match }) => {
       dispatch({ type: PRODUCT_CREATE_RESET })
       history.push(`/admin/product/${createdProduct._id}/edit`)
     }
-    dispatch(listProducts())
-  }, [history, userInfo, dispatch, successDelete, successCreate, createdProduct])
+    dispatch(listProducts('', pageNumber, '10'))
+  }, [history, userInfo, dispatch, successDelete, successCreate, createdProduct, pageNumber])
 
   const createProductHandler = () => {
     dispatch(createProduct())
@@ -105,6 +109,7 @@ const ProductListScreen = ({ history, match }) => {
               ))}
             </tbody>
           </Table>
+          <Paginate pages={pages} page={page} isAdmin />
         </React.Fragment>
       )}
     </React.Fragment>

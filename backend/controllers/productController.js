@@ -5,9 +5,24 @@ import Product from '../models/product.model.js'
 // @route   GET /api/products
 // @access  Public
 export const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({})
+  const pageSize = Number(req.query.pageSize) || 4
+  const page = Number(req.query.page) || 1
 
-  res.json(products)
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: 'i'
+        }
+      }
+    : {}
+
+  const count = await Product.countDocuments({ ...keyword })
+  const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1)) 
+
+  res.json({ products, page, pages: Math.ceil(count / pageSize) })
 })
 
 // @desc    Create a new product
@@ -96,14 +111,16 @@ export const createReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body
 
   const product = await Product.findById(req.params.id)
-  
+
   if (product) {
-    const alreadyReviewed = product.reviews.find(({ user }) => user.toString() === req.user._id.toString())
+    const alreadyReviewed = product.reviews.find(
+      ({ user }) => user.toString() === req.user._id.toString()
+    )
     if (alreadyReviewed) {
       res.status(400)
       throw new Error('Product already reviewed')
     }
-    
+
     if (Number(rating) > 5 || Number(rating) < 1) {
       res.status(400)
       throw new Error('Rating must be between 1 and 5')
@@ -117,7 +134,8 @@ export const createReview = asyncHandler(async (req, res) => {
     })
 
     product.numReviews = product.reviews.length
-    product.rating = product.reviews.reduce((acc, { rating }) => acc + rating, 0) / product.reviews.length
+    product.rating =
+      product.reviews.reduce((acc, { rating }) => acc + rating, 0) / product.reviews.length
 
     await product.save()
 
