@@ -96,12 +96,17 @@ export const createReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body
 
   const product = await Product.findById(req.params.id)
-
+  
   if (product) {
     const alreadyReviewed = product.reviews.find(({ user }) => user.toString() === req.user._id.toString())
     if (alreadyReviewed) {
       res.status(400)
       throw new Error('Product already reviewed')
+    }
+    
+    if (Number(rating) > 5 || Number(rating) < 1) {
+      res.status(400)
+      throw new Error('Rating must be between 1 and 5')
     }
 
     product.reviews.push({
