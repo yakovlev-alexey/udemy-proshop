@@ -46,6 +46,7 @@ const ProductEditScreen = ({ history, match }) => {
       setCountInStock(product.countInStock)
       setImage(product.image)
     }
+    // eslint-disable-next-line
   }, [history, userInfo, match.params.id, product._id, dispatch])
 
   const uploadFileHandler = async (e) => {

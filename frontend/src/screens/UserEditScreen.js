@@ -30,6 +30,7 @@ const UserEditScreen = ({ match }) => {
       setEmail(user.email)
       setIsAdmin(user.isAdmin)
     }
+    // eslint-disable-next-line
   }, [match.params.id, user, dispatch])
 
   const submitHandler = (e) => {
