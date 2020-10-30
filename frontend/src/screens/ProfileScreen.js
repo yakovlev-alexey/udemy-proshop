@@ -9,6 +9,7 @@ import Loader from '../components/Loader'
 
 import { getUserDetails, updateUserDetails } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userContants'
 
 const ProfileScreen = ({ history }) => {
   const [name, setName] = useState('')
@@ -20,21 +21,24 @@ const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const { loading, error, user } = useSelector((state) => state.userDetails)
-  const { loading: loadingOrders, error: errorOrders, orders } = useSelector((state) => state.myOrders)
+  const { loading: loadingOrders, error: errorOrders, orders } = useSelector(
+    (state) => state.myOrders
+  )
   const { userInfo } = useSelector((state) => state.userLogin)
   const { success } = useSelector((state) => state.userUpdateProfile)
 
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
-    } else if (!user.name) {
+    } else if (!user || !user.name || success) {
+      dispatch({ type: USER_UPDATE_PROFILE_RESET })
       dispatch(getUserDetails('profile'))
       dispatch(listMyOrders())
     } else {
       setName(user.name)
       setEmail(user.email)
     }
-  }, [history, userInfo, user, dispatch])
+  }, [history, userInfo, user, success, dispatch])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -133,9 +137,7 @@ const ProfileScreen = ({ history }) => {
                     )}
                   </th>
                   <th>
-                    <Link to={`/order/${order._id}`}>
-                      Details
-                    </Link>
+                    <Link to={`/order/${order._id}`}>Details</Link>
                   </th>
                 </tr>
               ))}
