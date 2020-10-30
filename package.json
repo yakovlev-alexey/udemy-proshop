@@ -10,7 +10,8 @@
     "client": "yarn --cwd ./frontend start",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
     "data:import": "node backend/seeder",
-    "data:delete": "node backend/seeder -d"
+    "data:delete": "node backend/seeder -d",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "repository": "https://github.com/yakovlev-alexey/udemy-proshop",
   "author": "Alexey Yakovlev <alexeyyakovlev0359@gmail.com>",
