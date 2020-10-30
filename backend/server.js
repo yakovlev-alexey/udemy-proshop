@@ -38,7 +38,17 @@ app.use('/api/upload', uploadRoutes)
 app.post('/api/payments/qiwi', updateQiwiOrderStatus)
 app.get('/api/payments/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
 
-const uploadsFolder = path.join(path.resolve(), '/uploads')
+const __dirname = path.resolve()
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')))
+
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+  )
+}
+
+const uploadsFolder = path.join(__dirname, '/uploads')
 if (!fs.existsSync(uploadsFolder)) {
   fs.mkdirSync(uploadsFolder)
 }
