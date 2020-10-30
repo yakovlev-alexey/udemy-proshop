@@ -7,6 +7,8 @@ import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Rating from '../components/Rating'
+import Meta from '../components/Meta'
+
 import { listProductDetails, createReview } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 
@@ -19,7 +21,9 @@ const ProductScreen = ({ history, match }) => {
 
   const { loading, error, product } = useSelector((state) => state.productDetails)
 
-  const { error: errorReview, success: successReview } = useSelector((state) => state.productCreateReview)
+  const { error: errorReview, success: successReview } = useSelector(
+    (state) => state.productCreateReview
+  )
 
   const { userInfo } = useSelector((state) => state.userLogin)
 
@@ -53,6 +57,7 @@ const ProductScreen = ({ history, match }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <React.Fragment>
+          <Meta title={`${product.name} | ProShop`} />
           <Row>
             <Col md={6}>
               <Image src={product.image} alt={product.name} fluid />
@@ -91,7 +96,10 @@ const ProductScreen = ({ history, match }) => {
                       <Row>
                         <Col>Qty:</Col>
                         <Col>
-                          <Form.Control as="select" value={qty} onChange={(e) => setQty(e.target.value)}>
+                          <Form.Control
+                            as="select"
+                            value={qty}
+                            onChange={(e) => setQty(e.target.value)}>
                             {[...Array(product.countInStock).keys()].map((x) => (
                               <option key={x + 1} value={x + 1}>
                                 {x + 1}
@@ -135,7 +143,10 @@ const ProductScreen = ({ history, match }) => {
                     <Form onSubmit={submitHandler}>
                       <Form.Group controlId="rating">
                         <Form.Label>Rating</Form.Label>
-                        <Form.Control as="select" value={rating} onChange={(e) => setRating(e.target.value)}>
+                        <Form.Control
+                          as="select"
+                          value={rating}
+                          onChange={(e) => setRating(e.target.value)}>
                           <option value="">Select...</option>
                           <option value={1}>1 - Poor</option>
                           <option value={2}>2 - Fair</option>

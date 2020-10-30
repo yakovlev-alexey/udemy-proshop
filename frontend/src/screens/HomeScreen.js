@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 
 import * as QueryString from 'query-string'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 
 import { listProducts } from '../actions/productActions'
@@ -11,6 +12,7 @@ import Paginate from '../components/Paginate'
 import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import Meta from '../components/Meta'
 
 const HomeScreen = ({ location, match }) => {
   const keyword = match.params.keyword?.toLowerCase()
@@ -26,7 +28,14 @@ const HomeScreen = ({ location, match }) => {
 
   return (
     <React.Fragment>
-      {!keyword && <ProductCarousel />}
+      <Meta />
+      {keyword ? (
+        <Link to="/" className="btn btn-light">
+          Go back
+        </Link>
+      ) : (
+        <ProductCarousel />
+      )}
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />
