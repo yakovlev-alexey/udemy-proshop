@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col } from 'react-bootstrap'
 
 import { listProducts } from '../actions/productActions'
+
+import ProductCarousel from '../components/ProductCarousel'
+import Paginate from '../components/Paginate'
 import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import Paginate from '../components/Paginate'
 
 const HomeScreen = ({ location, match }) => {
   const keyword = match.params.keyword?.toLowerCase()
@@ -24,6 +26,7 @@ const HomeScreen = ({ location, match }) => {
 
   return (
     <React.Fragment>
+      {!keyword && <ProductCarousel />}
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />

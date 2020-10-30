@@ -20,7 +20,7 @@ export const getProducts = asyncHandler(async (req, res) => {
   const count = await Product.countDocuments({ ...keyword })
   const products = await Product.find({ ...keyword })
     .limit(pageSize)
-    .skip(pageSize * (page - 1)) 
+    .skip(pageSize * (page - 1))
 
   res.json({ products, page, pages: Math.ceil(count / pageSize) })
 })
@@ -144,4 +144,17 @@ export const createReview = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('Product not found')
   }
+})
+
+// @desc    Fetch top rated products
+// @route   GET /api/products/top
+// @access  Public
+export const getTopProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({})
+    .sort({
+      rating: -1
+    })
+    .limit(3)
+
+  res.json(products)
 })
